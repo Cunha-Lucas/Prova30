@@ -9,7 +9,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "API de Folha de Pagamento");
 
-app.MapPost("/api/funcionario", async (Funcionario funcionario, AppDataContext context) =>
+app.MapPost("api/funcionario", async (Funcionario funcionario, AppDataContext context) =>
 {
     context.Add(funcionario);
     await context.SaveChangesAsync();
@@ -17,7 +17,7 @@ app.MapPost("/api/funcionario", async (Funcionario funcionario, AppDataContext c
 });
 
 //POST: /funcionario/cadastrar
-app.MapPost("/api/funcionario/cadastrar", ([FromBody] Funcionario funcionario,
+app.MapPost("api/funcionario/cadastrar", ([FromBody] Funcionario funcionario,
     [FromServices] AppDataContext ctx) =>
 {
     ctx.Funcionarios.Add(funcionario);
@@ -25,18 +25,15 @@ app.MapPost("/api/funcionario/cadastrar", ([FromBody] Funcionario funcionario,
     return Results.Created("", funcionario);
 });
 
-// //GET: /api/funcionario/buscar/{id}
-// app.MapGet("/api/funcionario/buscar/{id}", ([FromRoute] string id,
-//     [FromServices] AppDataContext ctx) =>
-// {
-//     Funcionario? funcionario = ctx.Funcionarios.Find(id);
-
-//     if (funcionario == null)
-//     {
-//         return Results.NotFound();
-//     }
-//     return Results.Ok(funcionario);
-// });
+//GET: /api/funcionario/listar
+app.MapGet("/api/funcionario/listar", ([FromServices] AppDataContext ctx) =>
+{
+    if (ctx.Funcionarios.Any())
+    {
+        return Results.Ok(ctx.Funcionarios.ToList());
+    }
+    return Results.NotFound();
+});
 
 // //POST: /api/funcionario/cadastrar
 // app.MapPost("/api/funcionario/cadastrar", ([FromBody] Funcionario funcionario,
