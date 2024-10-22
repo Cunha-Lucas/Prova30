@@ -1,6 +1,10 @@
-@Lucas_HostAddress = http://localhost:5246
+@base_url = http://localhost:5246/api
 
-GET {{Lucas_HostAddress}}/weatherforecast/
-Accept: application/json
+### Criação de um novo funcionário
+POST {{base_url}}/funcionario/cadastrar
+Content-Type: application/json
 
-###
+{
+    "nome": "Lucas",
+    "cpf" : "15116059952"
+}
